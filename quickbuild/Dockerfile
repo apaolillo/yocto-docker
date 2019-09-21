@@ -1,8 +1,8 @@
 FROM ubuntu:18.04
 
 # Name of the user used to realise the yocto build
-ARG USER_NAME=tony
-ARG WORKDIR=/workspace
+ENV USER_NAME=tony
+ENV WORKDIR=/workspace
 
 SHELL ["/bin/bash", "-c"]
 
@@ -45,7 +45,10 @@ ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 # Add a user for the yocto build (non-root requirement)
-RUN useradd ${USER_NAME} --shell /bin/bash --no-log-init
+RUN useradd ${USER_NAME} \
+        --shell /bin/bash \
+        --home-dir ${WORKDIR} \
+        --no-log-init
 
 # Set workspace directory
 WORKDIR ${WORKDIR}
@@ -73,5 +76,10 @@ RUN sed -i 's$"https://www.example.com/"$"https://xkcd.com/"$' \
     cat ${WORKDIR}/conf/mirrors.conf \
         >> ${WORKDIR}/poky/build/conf/local.conf && \
     bitbake core-image-sato
+
+# Automatically source bash with oe-init-build-env
+# Allows `bitbake` and other commands to be in path.
+COPY --chown=${USER_NAME}:${USER_NAME} scripts/bashrc.sh /tmp/
+RUN cat /tmp/bashrc.sh >> ~/.bashrc && rm /tmp/bashrc.sh
 
 WORKDIR ${WORKDIR}/poky/
