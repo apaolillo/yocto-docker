@@ -4,8 +4,8 @@ set -e
 IMAGE_TAG=yocto-raspi4b
 CONTAINER_NAME=$IMAGE_TAG
 
-pushd ../quickbuild
-./build.sh yocto-quickbuild
+pushd ../base
+./build.sh yocto-base
 popd
 
 docker build -t $IMAGE_TAG .

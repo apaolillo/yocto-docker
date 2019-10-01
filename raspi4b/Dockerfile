@@ -1,4 +1,4 @@
-FROM yocto-quickbuild:latest
+FROM yocto-base:latest
 
 # Download Raspberry layers
 WORKDIR ${WORKDIR}/poky/

@@ -1,4 +1,4 @@
-FROM yocto-quickbuild:latest
+FROM yocto-base:latest
 
 # Download xilinx layers
 WORKDIR ${WORKDIR}/poky/
@@ -18,5 +18,4 @@ RUN source oe-init-build-env && \
 # Build target file system image
 WORKDIR ${WORKDIR}/poky/
 RUN source oe-init-build-env && \
-    echo "Build command disabled. Please enable manually in Dockerfile." >&2
-#    bitbake core-image-minimal
+    bitbake core-image-minimal

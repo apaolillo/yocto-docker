@@ -1,14 +1,11 @@
 #!/bin/bash
 set -e
 
-IMAGE_TAG=yocto-zybo
+IMAGE_TAG=yocto-base
 CONTAINER_NAME=$IMAGE_TAG
 
-pushd ../base
-./build.sh yocto-base
-popd
+./build.sh $IMAGE_TAG
 
-docker build -t $IMAGE_TAG .
 docker run \
     --rm \
     -ti \
